@@ -8,88 +8,114 @@
 import SwiftUI
 
 struct TaskRow: View {
-    @EnvironmentObject var taskData: TaskData
     @Environment(\.managedObjectContext) var context
+    @EnvironmentObject var taskData: TaskData
     
     var task: Task
-    
     @Binding var selectedTask: Task?
-
+    
     var body: some View {
         VStack {
             HStack {
                 VStack(alignment: .leading) {
                     Text(task.title ?? "No Title")
-                    Text("\(task.date?.formatted() ?? "No date")")
+                    Text("\(task.date?.shortFormatted() ?? "No date")")
                         .foregroundColor(.secondary)
                 }
                 
                 Spacer()
                 
-                Image(systemName: task.isDone ? "circle.inset.filled" : (task.isFavorite ? "star.fill" : "circle"))
+                Image(systemName: taskIconName)
                     .imageScale(.large)
-                    .foregroundColor(.blue)
+                    .foregroundColor(taskIconColor)
                     .onTapGesture {
-                        if !task.isFavorite {
-                            DataController().doneTask(task: task, context: context)
-                        } else {
-                            DataController().favoriteTask(task: task, context: context)
-                        }
+                        handleTaskIconTap()
                     }
             }
             
-            /// DEBUG SECTION
             if taskData.debug {
                 VStack(alignment: .leading){
-                    Text("""
-                    {
-                        "id": "\(task.id?.uuidString ?? "No ID")",
-                        "title": "\(task.title ?? "No Title")",
-                        "isDone": \(task.isDone ? "true" : "false"),
-                        "isFavorite": \(task.isFavorite ? "true" : "false"),
-                    }
-                    """)
+                    Text(task.debug)
                 }
                 .foregroundColor(.gray)
             }
         }
         .swipeActions(edge: .leading) {
-            switch (task.isDone, task.isFavorite) {
-            case (false, false):
-                Button {
-                    DataController().doneTask(task: task, context: context)
-                } label: {
-                    Image(systemName: "circle")
-                }
-                .tint(.blue)
-                
-                Button {
-                    DataController().favoriteTask(task: task, context: context)
-                } label: {
-                    Image(systemName: "star")
-                }
-                .tint(.green)
-
-            case (true, false):
-                Button {
-                    DataController().doneTask(task: task, context: context)
-                } label: {
-                    Image(systemName: "circle.slash")
-                }
-                .tint(.blue)
-
-            case (false, true):
-                Button {
-                    DataController().favoriteTask(task: task, context: context)
-                } label: {
-                    Image(systemName: "star.slash")
-                }
-                .tint(.green)
-            default:
-                EmptyView()
-            }
+            leadingSwipeActions
         }
         .swipeActions(edge: .trailing) {
+            trailingSwipeActions
+        }
+    }
+    
+    // MARK: - Computed Properties
+    
+    private var taskIconName: String {
+        task.isDone ? "circle.inset.filled" : (task.isFavorite ? "star.fill" : "circle")
+    }
+    
+    private var taskIconColor: Color {
+        task.isDone ? .blue : (task.isFavorite ? .blue : .blue)
+    }
+    
+    // MARK: - Action Handling
+    
+    private func handleTaskIconTap() {
+        if !task.isFavorite {
+            DataController().doneTask(task: task, context: context)
+        } else {
+            DataController().favoriteTask(task: task, context: context)
+        }
+    }
+    
+    // MARK: - Swipe Actions
+    
+    private var leadingSwipeActions: some View {
+        switch (task.isDone, task.isFavorite) {
+        case (false, false):
+            return AnyView(
+                Group {
+                    Button {
+                        DataController().doneTask(task: task, context: context)
+                    } label: {
+                        Image(systemName: "circle")
+                    }
+                    .tint(.blue)
+                    
+                    Button {
+                        DataController().favoriteTask(task: task, context: context)
+                    } label: {
+                        Image(systemName: "star")
+                    }
+                    .tint(.green)
+                })
+        case (true, false):
+            return AnyView(
+                Group {
+                    Button {
+                        DataController().doneTask(task: task, context: context)
+                    } label: {
+                        Image(systemName: "circle.slash")
+                    }
+                    .tint(.blue)
+                })
+        case (false, true):
+            return AnyView(
+                Group {
+                    Button {
+                        DataController().favoriteTask(task: task, context: context)
+                    } label: {
+                        Image(systemName: "star.slash")
+                    }
+                    .tint(.green)
+                })
+        default:
+            return AnyView(EmptyView())
+        }
+    }
+    
+    private var trailingSwipeActions: some View {
+        return HStack {
             Button(role: .destructive) {
                 DataController().deleteTask(task: task, context: context)
             } label: {
@@ -105,6 +131,21 @@ struct TaskRow: View {
                 .tint(.blue)
             }
         }
+    }
+}
+
+// MARK: - Extensions
+
+extension Task {
+    var debug: String {
+        """
+        {
+            "id": "\(id?.uuidString ?? "No ID")",
+            "title": "\(title ?? "No Title")",
+            "isDone": \(isDone ? "true" : "false"),
+            "isFavorite": \(isFavorite ? "true" : "false"),
+        }
+        """
     }
 }
 

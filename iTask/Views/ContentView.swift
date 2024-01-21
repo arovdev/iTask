@@ -33,7 +33,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                .searchable(text: $taskData.searchText, prompt: "Search tasks")
+                .searchable(text: $taskData.searchText, prompt: "Search")
             }
             .navigationTitle("iTask")
             .toolbar {
