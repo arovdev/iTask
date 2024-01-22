@@ -25,12 +25,22 @@ struct TaskRow: View {
                 
                 Spacer()
                 
-                Image(systemName: taskIconName)
-                    .imageScale(.large)
-                    .foregroundColor(taskIconColor)
-                    .onTapGesture {
-                        handleTaskIconTap()
-                    }
+                /// Task icon.
+                HStack {
+                    Image(systemName: taskIconName)
+                        .imageScale(.large)
+                        .foregroundColor(.yellow)
+                        .onTapGesture {
+                            handleTaskIconTap()
+                        }
+                    
+                    Image(systemName: taskIconName)
+                        .imageScale(.large)
+                        .foregroundColor(taskIconColor)
+                        .onTapGesture {
+                            handleTaskIconTap()
+                        }
+                }
             }
             
             if taskData.debug {
@@ -51,43 +61,43 @@ struct TaskRow: View {
     // MARK: - Computed Properties
     
     private var taskIconName: String {
-        task.isDone ? "circle.inset.filled" : (task.isFavorite ? "star.fill" : "circle")
+        task.isDone ? "circle.inset.filled" : (task.isImportant ? "calendar.badge.exclamationmark" : "circle")
+        /// New function favorite.
+        /// task.isDone ? "circle.inset.filled" : (task.isFavorite ? "star.fill" : (task.isImportant ? "calendar.badge.exclamationmark" : "circle"))
     }
     
     private var taskIconColor: Color {
-        task.isDone ? .blue : (task.isFavorite ? .blue : .blue)
+        task.isDone ? .blue : (task.isImportant ? .red : .blue)
     }
     
     // MARK: - Action Handling
     
     private func handleTaskIconTap() {
-        if !task.isFavorite {
+        if task.isDone || !task.isDone && !task.isImportant {
             DataController().doneTask(task: task, context: context)
-        } else {
-            DataController().favoriteTask(task: task, context: context)
         }
     }
     
     // MARK: - Swipe Actions
     
     private var leadingSwipeActions: some View {
-        switch (task.isDone, task.isFavorite) {
+        switch (task.isDone, task.isImportant) {
         case (false, false):
             return AnyView(
                 Group {
                     Button {
                         DataController().doneTask(task: task, context: context)
                     } label: {
-                        Image(systemName: "circle")
+                        Image(systemName: "circle.dashed.inset.filled")
                     }
                     .tint(.blue)
                     
                     Button {
-                        DataController().favoriteTask(task: task, context: context)
+                        DataController().importantTask(task: task, context: context)
                     } label: {
-                        Image(systemName: "star")
+                        Image(systemName: "calendar.badge.exclamationmark")
                     }
-                    .tint(.green)
+                    .tint(.red)
                 })
         case (true, false):
             return AnyView(
@@ -95,7 +105,7 @@ struct TaskRow: View {
                     Button {
                         DataController().doneTask(task: task, context: context)
                     } label: {
-                        Image(systemName: "circle.slash")
+                        Image(systemName: "circle.dashed")
                     }
                     .tint(.blue)
                 })
@@ -103,11 +113,18 @@ struct TaskRow: View {
             return AnyView(
                 Group {
                     Button {
-                        DataController().favoriteTask(task: task, context: context)
+                        DataController().importantTask(task: task, context: context)
                     } label: {
-                        Image(systemName: "star.slash")
+                        Image(systemName: "calendar")
                     }
                     .tint(.green)
+                    
+                    Button {
+                        DataController().doneTask(task: task, context: context)
+                    } label: {
+                        Image(systemName: "circle.dashed.inset.filled")
+                    }
+                    .tint(.blue)
                 })
         default:
             return AnyView(EmptyView())
@@ -143,7 +160,7 @@ extension Task {
             "id": "\(id?.uuidString ?? "No ID")",
             "title": "\(title ?? "No Title")",
             "isDone": \(isDone ? "true" : "false"),
-            "isFavorite": \(isFavorite ? "true" : "false"),
+            "isImportant": \(isImportant ? "true" : "false"),
         }
         """
     }

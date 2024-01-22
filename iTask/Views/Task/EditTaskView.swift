@@ -19,18 +19,41 @@ struct EditTaskView: View {
         NavigationView {
             VStack {
                 List {
-                    TextField("\(title)", text: $title)
-                        .onAppear {
-                            title = task.title ?? ""
-                        }
+                    // MARK: - Information Section
+                    InformationSection()
                     
-                    Button("Edit") {
+                    // MARK: - Change Button
+                    CButton(title: "Change") {
                         DataController().editTask(task: task, title: title, context: context)
                         dismiss()
                     }
                 }
             }
             .navigationTitle("Edit task")
+        }
+    }
+}
+
+extension EditTaskView {
+    // Information Section
+    func InformationSection() -> some View {
+        Section(header: Text("Information")) {
+            HStack(spacing: 10) {
+                Image(systemName: "square.text.square")
+                    .foregroundColor(.blue)
+                
+                TextField("\(title)", text: $title)
+                    .onAppear {
+                        title = task.title ?? ""
+                    }
+            }
+        }
+    }
+    
+    // Custom Button
+    func CButton(title: String, onClick: @escaping () -> ()) -> some View {
+        Button("\(title)") {
+            onClick()
         }
     }
 }

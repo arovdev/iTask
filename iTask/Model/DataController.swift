@@ -36,10 +36,12 @@ class DataController: ObservableObject {
     }
     
     /// Adds a new task to the Core Data context.
-    func addTask(title: String, context: NSManagedObjectContext) {
+    func addTask(title: String, isImportant: Bool, context: NSManagedObjectContext) {
         let task = Task(context: context)
         task.id = UUID()
         task.title = title
+        task.isDone = false
+        task.isImportant = isImportant
         task.date = Date()
         
         save(context: context)
@@ -53,9 +55,9 @@ class DataController: ObservableObject {
         save(context: context)
     }
     
-    /// Toggles the 'isFavorite' property of a task in the Core Data context.
-    func favoriteTask(task: Task, context: NSManagedObjectContext) {
-        task.isFavorite.toggle()
+    /// Toggles the 'isImportant' property of a task in the Core Data context.
+    func importantTask(task: Task, context: NSManagedObjectContext) {
+        task.isImportant.toggle()
         
         save(context: context)
     }
@@ -63,7 +65,7 @@ class DataController: ObservableObject {
     /// Toggles the 'isDone' property of a task in the Core Data context.
     func doneTask(task: Task, context: NSManagedObjectContext) {
         task.isDone.toggle()
-        task.isFavorite = false
+        task.isImportant = false
         
         save(context: context)
     }

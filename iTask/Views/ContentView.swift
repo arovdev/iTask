@@ -4,7 +4,6 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var taskData: TaskData
-    
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(sortDescriptors: [SortDescriptor(\.date, order: .reverse)]) var tasks: FetchedResults<Task>
     
@@ -15,61 +14,22 @@ struct ContentView: View {
         NavigationView {
             VStack {
                 List {
-                    Section(header: Text("Favorites")) {
-                        ForEach(filteredTasks.filter { $0.isFavorite }) { task in
-                            TaskRow(task: task, selectedTask: $selectedTask)
-                        }
-                    }
-
-                    Section(header: Text("Tasks")) {
-                        ForEach(filteredTasks.filter { !$0.isDone && !$0.isFavorite }) { task in
-                            TaskRow(task: task, selectedTask: $selectedTask)
-                        }
-                    }
-                    
-                    Section(header: Text("Done")) {
-                        ForEach(filteredTasks.filter { $0.isDone }) { task in
-                            TaskRow(task: task, selectedTask: $selectedTask)
-                        }
-                    }
+                    /// Sections for different task statuses.
+                    taskSection(title: "Important", tasks: filteredTasks(for: .important))
+                    taskSection(title: "Tasks", tasks: filteredTasks(for: .regular))
+                    taskSection(title: "Done", tasks: filteredTasks(for: .done))
                 }
                 .searchable(text: $taskData.searchText, prompt: "Search")
             }
             .navigationTitle("iTask")
             .toolbar {
-                /// Debug Mode
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    Button {
-//                        taskData.debug.toggle()
-//                    } label: {
-//                        Image(systemName: "exclamationmark.triangle")
-//                    }
-//                    .tint(taskData.debug ? .red : .gray)
-//                }
-                
-                /// Add Task
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showingAddTask.toggle()
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                }
-                
-                /// Change Theme
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        taskData.darkMode.toggle()
-                    } label: {
-                        Image(systemName: taskData.darkMode ? "moon.fill" : "sun.max.fill")
-                    }
-                }
+                toolbars()
             }
             .sheet(isPresented: $showingAddTask) {
                 VStack {
                     AddTaskView()
                 }
-                .presentationDetents([.fraction(0.8)])
+                .presentationDetents([.fraction(0.6)])
                 .presentationDragIndicator(.visible)
             }
             .sheet(item: $selectedTask) { task in
@@ -83,15 +43,54 @@ struct ContentView: View {
         }
     }
     
-    var filteredTasks: [Task] {
-        let allTasks = Array(tasks)
+    /// Function to build toolbar content.
+    @ToolbarContentBuilder
+    func toolbars() -> some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button {
+                showingAddTask.toggle()
+            } label: {
+                Image(systemName: "plus")
+            }
+        }
         
-        if taskData.searchText.isEmpty {
-            return allTasks
-        } else {
-            return allTasks.filter {
-                $0.title?.localizedCaseInsensitiveContains(taskData.searchText) == true
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button {
+                taskData.darkMode.toggle()
+            } label: {
+                Image(systemName: taskData.darkMode ? "moon.fill" : "sun.max.fill")
             }
         }
     }
+    
+    /// Function to create a section of tasks based on their status.
+    func taskSection(title: String, tasks: [Task]) -> some View {
+        Section(header: Text(title)) {
+            ForEach(tasks) { task in
+                TaskRow(task: task, selectedTask: $selectedTask)
+            }
+        }
+    }
+    
+    /// Function to filter tasks based on their status.
+    func filteredTasks(for status: TaskStatus) -> [Task] {
+        filteredTasks.filter { task in
+            switch status {
+            case .important: return task.isImportant
+            case .regular: return !task.isDone && !task.isImportant
+            case .done: return task.isDone
+            }
+        }
+    }
+    
+    /// Computed property to get filtered tasks based on search text.
+    var filteredTasks: [Task] {
+        taskData.searchText.isEmpty ? Array(tasks) : Array(tasks.filter { $0.title?.localizedCaseInsensitiveContains(taskData.searchText) == true })
+    }
+}
+
+// MARK: - TaskStatus
+
+enum TaskStatus {
+    case important, regular, done
 }

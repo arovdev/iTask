@@ -17,7 +17,6 @@
 		316188D42B5C38EE0038DD43 /* EditTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316188D32B5C38EE0038DD43 /* EditTaskView.swift */; };
 		316188D62B5C569F0038DD43 /* TaskData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316188D52B5C569F0038DD43 /* TaskData.swift */; };
 		316188D92B5C942A0038DD43 /* TaskRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316188D82B5C942A0038DD43 /* TaskRow.swift */; };
-		316188DC2B5C98460038DD43 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316188DB2B5C98460038DD43 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,7 +31,6 @@
 		316188D32B5C38EE0038DD43 /* EditTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskView.swift; sourceTree = "<group>"; };
 		316188D52B5C569F0038DD43 /* TaskData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskData.swift; sourceTree = "<group>"; };
 		316188D82B5C942A0038DD43 /* TaskRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRow.swift; sourceTree = "<group>"; };
-		316188DB2B5C98460038DD43 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,7 +101,6 @@
 		316188D22B5C1E3F0038DD43 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				316188DA2B5C98350038DD43 /* Settings */,
 				316188D72B5C94110038DD43 /* Task */,
 				316188BD2B5C16640038DD43 /* ContentView.swift */,
 			);
@@ -118,14 +115,6 @@
 				316188D82B5C942A0038DD43 /* TaskRow.swift */,
 			);
 			path = Task;
-			sourceTree = "<group>";
-		};
-		316188DA2B5C98350038DD43 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				316188DB2B5C98460038DD43 /* SettingsView.swift */,
-			);
-			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -201,7 +190,6 @@
 				316188D62B5C569F0038DD43 /* TaskData.swift in Sources */,
 				316188CF2B5C16B70038DD43 /* iTaskModel.xcdatamodeld in Sources */,
 				316188D12B5C1E3A0038DD43 /* AddTaskView.swift in Sources */,
-				316188DC2B5C98460038DD43 /* SettingsView.swift in Sources */,
 				316188D92B5C942A0038DD43 /* TaskRow.swift in Sources */,
 				316188BE2B5C16640038DD43 /* ContentView.swift in Sources */,
 				316188D42B5C38EE0038DD43 /* EditTaskView.swift in Sources */,
