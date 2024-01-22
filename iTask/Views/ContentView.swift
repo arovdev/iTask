@@ -19,10 +19,10 @@ struct ContentView: View {
                     taskSection(title: "Tasks", tasks: filteredTasks(for: .regular))
                     taskSection(title: "Done", tasks: filteredTasks(for: .done))
                 }
-                .searchable(text: $taskData.searchText, prompt: "Search")
             }
             .id(UUID())
             .navigationTitle("iTask")
+            .searchable(text: $taskData.searchText, prompt: "Search")
             .toolbar {
                 toolbars()
             }
