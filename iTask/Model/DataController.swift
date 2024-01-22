@@ -59,7 +59,6 @@ class DataController: ObservableObject {
     /// Toggles the 'isFavorite' property of a task in the Core Data context.
     func favoriteTask(task: Task, context: NSManagedObjectContext) {
         task.isFavorite.toggle()
-
         save(context: context)
     }
     

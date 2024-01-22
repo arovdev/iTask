@@ -13,7 +13,7 @@ struct TaskRow: View {
     
     var task: Task
     @Binding var selectedTask: Task?
-    
+
     var body: some View {
         VStack {
             HStack {
@@ -35,7 +35,7 @@ struct TaskRow: View {
                                 handleFavoriteTap()
                             }
                     }
-
+                    
                     Image(systemName: taskIconName)
                         .imageScale(.large)
                         .foregroundColor(taskIconColor)
