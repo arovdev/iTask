@@ -21,6 +21,7 @@ struct ContentView: View {
                 }
                 .searchable(text: $taskData.searchText, prompt: "Search")
             }
+            .id(UUID())
             .navigationTitle("iTask")
             .toolbar {
                 toolbars()

@@ -26,14 +26,16 @@ struct TaskRow: View {
                 Spacer()
                 
                 /// Task icon.
-                HStack {
-                    Image(systemName: taskIconName)
-                        .imageScale(.large)
-                        .foregroundColor(.yellow)
-                        .onTapGesture {
-                            handleTaskIconTap()
-                        }
-                    
+                HStack(spacing: 12) {
+                    if task.isFavorite {
+                        Image(systemName: "star.circle.fill")
+                            .imageScale(.large)
+                            .foregroundColor(.yellow)
+                            .onTapGesture {
+                                handleFavoriteTap()
+                            }
+                    }
+
                     Image(systemName: taskIconName)
                         .imageScale(.large)
                         .foregroundColor(taskIconColor)
@@ -62,8 +64,6 @@ struct TaskRow: View {
     
     private var taskIconName: String {
         task.isDone ? "circle.inset.filled" : (task.isImportant ? "calendar.badge.exclamationmark" : "circle")
-        /// New function favorite.
-        /// task.isDone ? "circle.inset.filled" : (task.isFavorite ? "star.fill" : (task.isImportant ? "calendar.badge.exclamationmark" : "circle"))
     }
     
     private var taskIconColor: Color {
@@ -76,6 +76,10 @@ struct TaskRow: View {
         if task.isDone || !task.isDone && !task.isImportant {
             DataController().doneTask(task: task, context: context)
         }
+    }
+    
+    private func handleFavoriteTap() {
+        DataController().favoriteTask(task: task, context: context)
     }
     
     // MARK: - Swipe Actions
@@ -147,6 +151,15 @@ struct TaskRow: View {
                 }
                 .tint(.blue)
             }
+            
+            if !task.isDone {
+                Button {
+                    DataController().favoriteTask(task: task, context: context)
+                } label: {
+                    Image(systemName: "star.circle.fill")
+                }
+                .tint(.yellow)
+            }
         }
     }
 }
@@ -160,6 +173,7 @@ extension Task {
             "id": "\(id?.uuidString ?? "No ID")",
             "title": "\(title ?? "No Title")",
             "isDone": \(isDone ? "true" : "false"),
+            "isFavorite": \(isFavorite ? "true" : "false"),
             "isImportant": \(isImportant ? "true" : "false"),
         }
         """

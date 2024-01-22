@@ -54,6 +54,13 @@ extension AddTaskView {
     func DetailsSection() -> some View {
         Section(header: Text("Details")) {
             HStack(spacing: 10) {
+                Image(systemName: "star.fill")
+                    .foregroundColor(.yellow)
+                Toggle("Favorite", isOn: $isFavorite)
+                    .tint(.yellow)
+            }
+            
+            HStack(spacing: 10) {
                 Image(systemName: "calendar.badge.exclamationmark")
                     .foregroundColor(.red)
                 Toggle("Important", isOn: $isImportant)
