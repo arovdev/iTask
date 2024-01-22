@@ -12,7 +12,6 @@ struct AddTaskView: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var title: String = ""
-    @State private var isFavorite: Bool = false
     @State private var isImportant: Bool = false
     
     var body: some View {
@@ -26,7 +25,7 @@ struct AddTaskView: View {
                 
                 // MARK: - Add Button
                 CButton(title: "Add") {
-                    DataController().addTask(title: title, isImportant: isImportant, isFavorite: isFavorite, context: context)
+                    DataController().addTask(title: title, isImportant: isImportant, context: context)
                     dismiss()
                 }
             }
@@ -53,13 +52,6 @@ extension AddTaskView {
     // Details Section
     func DetailsSection() -> some View {
         Section(header: Text("Details")) {
-            HStack(spacing: 10) {
-                Image(systemName: "star.fill")
-                    .foregroundColor(.yellow)
-                Toggle("Favorite", isOn: $isFavorite)
-                    .tint(.yellow)
-            }
-            
             HStack(spacing: 10) {
                 Image(systemName: "calendar.badge.exclamationmark")
                     .foregroundColor(.red)

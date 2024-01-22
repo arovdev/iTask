@@ -27,15 +27,6 @@ struct TaskRow: View {
                 
                 /// Task icon.
                 HStack(spacing: 12) {
-                    if task.isFavorite {
-                        Image(systemName: "star.circle.fill")
-                            .imageScale(.large)
-                            .foregroundColor(.yellow)
-                            .onTapGesture {
-                                handleFavoriteTap()
-                            }
-                    }
-                    
                     Image(systemName: taskIconName)
                         .imageScale(.large)
                         .foregroundColor(taskIconColor)
@@ -76,10 +67,6 @@ struct TaskRow: View {
         if task.isDone || !task.isDone && !task.isImportant {
             DataController().doneTask(task: task, context: context)
         }
-    }
-    
-    private func handleFavoriteTap() {
-        DataController().favoriteTask(task: task, context: context)
     }
 
     // MARK: - Swipe Actions
@@ -151,15 +138,6 @@ struct TaskRow: View {
                 }
                 .tint(.blue)
             }
-            
-            if !task.isDone {
-                Button {
-                    DataController().favoriteTask(task: task, context: context)
-                } label: {
-                    Image(systemName: "star.circle.fill")
-                }
-                .tint(.yellow)
-            }
         }
     }
 }
@@ -173,7 +151,6 @@ extension Task {
             "id": "\(id?.uuidString ?? "No ID")",
             "title": "\(title ?? "No Title")",
             "isDone": \(isDone ? "true" : "false"),
-            "isFavorite": \(isFavorite ? "true" : "false"),
             "isImportant": \(isImportant ? "true" : "false"),
         }
         """
