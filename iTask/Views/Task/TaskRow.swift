@@ -81,7 +81,7 @@ struct TaskRow: View {
     private func handleFavoriteTap() {
         DataController().favoriteTask(task: task, context: context)
     }
-    
+
     // MARK: - Swipe Actions
     
     private var leadingSwipeActions: some View {
