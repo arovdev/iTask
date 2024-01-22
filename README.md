@@ -1,19 +1,35 @@
 # iTask
-Version 1.0
 
-iTask is a simple and intuitive task management app designed to help you stay organized and focused. Whether you're managing work projects, personal tasks, or a combination of both, iTask provides a clean and efficient interface to streamline your task management process.
+Welcome to iTask - your personal task management assistant!
 
-<img src="https://github.com/arovdev/iTask/assets/91742629/b1062acc-d19a-4444-881d-d0a69a387027" width="300">
-<img src="https://github.com/arovdev/iTask/assets/91742629/e09dddd1-64e3-4b48-a29f-a762b5ae80c5" width="300">
+## About the App
 
+iTask is a simple and efficient task management application designed to help you organize your day, boost productivity, and achieve your goals. This README provides an overview of the application, its features, and instructions for getting started.
 
-**Key Features:**
-- **Intuitive Task Organization:** Group your tasks into categories such as Favorites, Active Tasks, Completed, for easy navigation.
+## Key Features
 
-- **Smart Filtering:** Quickly find the tasks you need by utilizing the powerful search functionality. Filter tasks based on completion status and favorites.
+- **Task Categories:** Organize your tasks into categories such as "Important," "Regular," and "Done" for better control and understanding of your workflow.
+  
+- **Task Search:** Utilize the convenient search functionality to quickly find specific tasks when needed.
+  
+- **Easy Task Addition:** Add new tasks easily and quickly, set priorities, and mark important events.
+  
+- **Task Status Changes:** Mark tasks as completed, important, or with any other status effortlessly.
+  
+- **Interface Customization:** Switch between light and dark modes based on your preferences.
 
-- **Dark Mode:** Switch between light and dark modes to suit your preferences and reduce eye strain during low-light conditions.
+## What's New in Version 0.1 Stable
 
-- **Task Details:** View detailed information about each task, including its ID, completion status, favorite status, due date, and more.
+- Stable and reliable foundation for managing your tasks.
+- Basic functions for adding, editing, and tracking task statuses.
+- Improved interface and convenient search functionality.
 
-- **Effortless Task Management:** Mark tasks as done and set favorites with simple taps and gestures.
+## Future Plans
+
+iTask is evolving, and we plan to add even more features and improvements in future updates. We value your feedback, so feel free to share your experience using the application.
+
+Thank you for choosing iTask for your task management needs!
+
+## Contributing
+
+If you'd like to contribute to iTask, please fork the repository and create a pull request. We appreciate your contributions!
