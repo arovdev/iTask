@@ -44,8 +44,6 @@ struct iTaskApp: App {
                         .overlay {
                             // MARK: - FAB
                             FAB()
-                                .disabled(appData.selectedTab == .tasks ? false : true)
-                                .rotationEffect(Angle(degrees: appData.selectedTab == .tasks ? 0 : 45))
                         }
                 }
                 .onAppear {
