@@ -8,9 +8,17 @@
 import Foundation
 import SwiftUI
 
+// TODO: - Add Core Data
+import CoreData
+
 class AppData: ObservableObject {
-    @Published var debug: Bool = false
+    @Published var selectedTab: Tab = .tasks
+    
+    // MARK: - Tasks
+    @Published var showingAddTask: Bool = false
     @Published var searchText: String = ""
     
+    // MARK: - Settings
     @Published var darkMode: Bool = false
+    @Published var debugMode: Bool = false
 }

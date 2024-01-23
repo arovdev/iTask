@@ -11,8 +11,7 @@ struct TasksView: View {
     @EnvironmentObject var appData: AppData
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(sortDescriptors: [SortDescriptor(\.date, order: .reverse)]) var tasks: FetchedResults<Task>
-    
-    @State private var showingAddTask: Bool = false
+
     @State private var selectedTask: Task?
     
     var body: some View {
@@ -30,7 +29,7 @@ struct TasksView: View {
             .toolbar {
                 toolbars()
             }
-            .sheet(isPresented: $showingAddTask) {
+            .sheet(isPresented: $appData.showingAddTask) {
                 VStack {
                     AddTaskView()
                 }
@@ -51,13 +50,8 @@ struct TasksView: View {
     /// Function to build toolbar content.
     @ToolbarContentBuilder
     func toolbars() -> some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button {
-                showingAddTask.toggle()
-            } label: {
-                Image(systemName: "plus")
-            }
-        }
+        ToolbarItem(placement: .principal) { }
+        /// At this moment we have nothing to add here.
     }
     
     /// Function to create a section of tasks based on their status.

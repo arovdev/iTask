@@ -36,7 +36,7 @@ struct TaskRow: View {
                 }
             }
             
-            if appData.debug {
+            if appData.debugMode {
                 VStack(alignment: .leading){
                     Text(task.debug)
                 }

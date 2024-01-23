@@ -12,23 +12,46 @@ struct iTaskApp: App {
     @State private var dataController = DataController()
     @StateObject private var appData = AppData()
     
+    @State private var selectedTab: Tab = .tasks
+    
     var body: some Scene {
         WindowGroup {
-            // MARK: - Tab Bar
-            TabView {
-                TasksView()
-                    .tabItem {
-                        Image(systemName: "list.triangle")
+            NavigationView {
+                ZStack(alignment: .bottom) {
+                    // MARK: - Tab View
+                    TabView(selection: $appData.selectedTab) {
+                        /// Tasks View
+                        TasksView()
+                            .tabItem {
+                                Image(systemName: "list.triangle")
+                            }
+                            .tag(Tab.tasks)
+                            .environment(\.managedObjectContext, dataController.container.viewContext)
+                            .environmentObject(appData)
+                        
+                        /// Settings View
+                        SettingsView()
+                            .tabItem {
+                                Image(systemName: "gearshape")
+                            }
+                            .tag(Tab.settings)
+                            .environment(\.managedObjectContext, dataController.container.viewContext)
+                            .environmentObject(appData)
                     }
-                    .environment(\.managedObjectContext, dataController.container.viewContext)
-                    .environmentObject(appData)
-                
-                SettingsView()
-                    .tabItem {
-                        Image(systemName: "gearshape")
-                    }
-                    .environment(\.managedObjectContext, dataController.container.viewContext)
-                    .environmentObject(appData)
+                    
+                    // MARK: - Custom Tab Bar
+                    CustomTabBar(selectedTab: $appData.selectedTab)
+                        .overlay {
+                            // MARK: - FAB
+                            FAB()
+                                .disabled(appData.selectedTab == .tasks ? false : true)
+                                .rotationEffect(Angle(degrees: appData.selectedTab == .tasks ? 0 : 45))
+                        }
+                }
+                .onAppear {
+                    UITabBar.appearance().isHidden = true
+                }
+                .environmentObject(appData)
             }
         }
     }
