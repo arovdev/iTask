@@ -10,13 +10,26 @@ import SwiftUI
 @main
 struct iTaskApp: App {
     @State private var dataController = DataController()
-    @StateObject private var taskData = TaskData()
+    @StateObject private var appData = AppData()
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, dataController.container.viewContext)
-                .environmentObject(taskData)
+            // MARK: - Tab Bar
+            TabView {
+                TasksView()
+                    .tabItem {
+                        Image(systemName: "list.triangle")
+                    }
+                    .environment(\.managedObjectContext, dataController.container.viewContext)
+                    .environmentObject(appData)
+                
+                SettingsView()
+                    .tabItem {
+                        Image(systemName: "gearshape")
+                    }
+                    .environment(\.managedObjectContext, dataController.container.viewContext)
+                    .environmentObject(appData)
+            }
         }
     }
 }

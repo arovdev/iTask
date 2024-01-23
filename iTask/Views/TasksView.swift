@@ -1,9 +1,14 @@
-// ContentView.swift
+//
+//  TasksView.swift
+//  iTask
+//
+//  Created by Arthur Reshetnyak on 2024-01-23.
+//
 
 import SwiftUI
 
-struct ContentView: View {
-    @EnvironmentObject var taskData: TaskData
+struct TasksView: View {
+    @EnvironmentObject var appData: AppData
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(sortDescriptors: [SortDescriptor(\.date, order: .reverse)]) var tasks: FetchedResults<Task>
     
@@ -20,7 +25,7 @@ struct ContentView: View {
                     taskSection(title: "Done", tasks: filteredTasks(for: .done))
                 }
             }
-            .searchable(text: $taskData.searchText, prompt: "Search")
+            .searchable(text: $appData.searchText, prompt: "Search")
             .navigationTitle("iTask")
             .toolbar {
                 toolbars()
@@ -39,7 +44,7 @@ struct ContentView: View {
                 .presentationDetents([.fraction(0.5)])
                 .presentationDragIndicator(.visible)
             }
-            .preferredColorScheme(taskData.darkMode ? .dark : .light)
+            .preferredColorScheme(appData.darkMode ? .dark : .light)
         }
     }
     
@@ -51,14 +56,6 @@ struct ContentView: View {
                 showingAddTask.toggle()
             } label: {
                 Image(systemName: "plus")
-            }
-        }
-        
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button {
-                taskData.darkMode.toggle()
-            } label: {
-                Image(systemName: taskData.darkMode ? "moon.fill" : "sun.max.fill")
             }
         }
     }
@@ -85,7 +82,7 @@ struct ContentView: View {
     
     /// Computed property to get filtered tasks based on search text.
     var filteredTasks: [Task] {
-        taskData.searchText.isEmpty ? Array(tasks) : Array(tasks.filter { $0.title?.localizedCaseInsensitiveContains(taskData.searchText) == true })
+        appData.searchText.isEmpty ? Array(tasks) : Array(tasks.filter { $0.title?.localizedCaseInsensitiveContains(appData.searchText) == true })
     }
 }
 

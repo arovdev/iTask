@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TaskRow: View {
     @Environment(\.managedObjectContext) var context
-    @EnvironmentObject var taskData: TaskData
+    @EnvironmentObject var appData: AppData
     
     var task: Task
     @Binding var selectedTask: Task?
@@ -36,7 +36,7 @@ struct TaskRow: View {
                 }
             }
             
-            if taskData.debug {
+            if appData.debug {
                 VStack(alignment: .leading){
                     Text(task.debug)
                 }
