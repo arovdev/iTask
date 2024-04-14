@@ -1,5 +1,10 @@
 # iTask
 
+![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)
+![Xcode](https://img.shields.io/badge/Xcode-14.0-red.svg)
+![iOS](https://img.shields.io/badge/iOS-16.0-green.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+
 Welcome to iTask - your personal task management assistant!
 
 ## About the App
